@@ -1,19 +1,27 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import MainLayout from '../components/MainLayout'
 
 import Counter from '../features/counter/Counter'
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.scss'
 
 const IndexPage: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Redux Toolkit</title>
+        <title>Phone Catalog</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <header className={styles.header}>
-        <img src="/logo.svg" className={styles.logo} alt="logo" />
-        <Counter />
+      <MainLayout>
+        Main
+      </MainLayout>
+    </div>
+  )
+}
+
+export default IndexPage
+
+{/* <Counter />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
@@ -54,10 +62,4 @@ const IndexPage: NextPage = () => {
           >
             React Redux
           </a>
-        </span>
-      </header>
-    </div>
-  )
-}
-
-export default IndexPage
+        </span> */}

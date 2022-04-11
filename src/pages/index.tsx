@@ -1,11 +1,32 @@
+import { useState } from 'react';
 import type { NextPage } from 'next'
 import Head from 'next/head'
+
+import { Navigation, Pagination as SwiperPagination, Autoplay } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import "swiper/css/autoplay"
+
 import MainLayout from '../components/MainLayout'
+import Pagination from '../components/Pagination';
 
-import Counter from '../features/counter/Counter'
 import styles from '../styles/Home.module.scss'
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { getProducts, selectBrandNew, selectHotPrices, selectPhonesCount, selectTabletsCount } from '../features/products/productsSlice';
+import { Product } from '../types/product';
 
-const IndexPage: NextPage = () => {
+type Props = {
+  hotPricesProducts: Product[],
+  brandNewProducts: Product[],
+  phonesCount: number,
+  tabletsCount: number
+}
+
+const IndexPage: NextPage<Props> = ({ hotPricesProducts, brandNewProducts, phonesCount, tabletsCount }) => {
+  const [hotPricesPage, setHotPricesPage] = useState(1);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -13,7 +34,32 @@ const IndexPage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MainLayout>
-        Main
+        <Swiper
+          slidesPerView={1}
+          spaceBetween={30}
+          loop={true}
+          pagination={{
+            clickable: true,
+          }}
+          navigation
+          autoplay={true}
+          modules={[SwiperPagination, Navigation, Autoplay]}
+          className={styles.swiper}
+        >
+          <SwiperSlide className={styles.swiper__slide} />
+          <SwiperSlide className={styles.swiper__slide} />
+          <SwiperSlide className={styles.swiper__slide} />
+        </Swiper>
+        <section className={styles.hot_prices}>
+          <div className={styles.hot_prices__header}>
+            <h1 className={styles.hot_prices__header_title}>
+              Hot prices
+            </h1>
+            <Pagination />
+          </div>
+          <p>{hotPricesProducts}</p>
+          {/* // <ProductsList /> */}
+        </section>
       </MainLayout>
     </div>
   )
@@ -21,45 +67,21 @@ const IndexPage: NextPage = () => {
 
 export default IndexPage
 
-{/* <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className={styles.link}
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className={styles.link}
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className={styles.link}
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className={styles.link}
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span> */}
+export async function getServerSideProps() {
+  const dispatch = useAppDispatch();
+  await dispatch(getProducts());
+
+  const hotPricesProducts = useAppSelector(selectHotPrices);
+  const brandNewProducts = useAppSelector(selectBrandNew);
+  const phonesCount = useAppSelector(selectPhonesCount);
+  const tabletsCount = useAppSelector(selectTabletsCount);
+
+  return {
+    props: {
+      hotPricesProducts,
+      brandNewProducts,
+      phonesCount,
+      tabletsCount
+    }, // will be passed to the page component as props
+  }
+}

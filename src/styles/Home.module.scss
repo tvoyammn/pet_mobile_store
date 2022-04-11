@@ -1,1 +1,25 @@
+@import './utils/_variables.module.scss';
+@import './utils/placeholders.module.scss';
 
+.swiper {
+  width: 1040px;
+  height: 400px;
+
+  &__slide {
+    background-image: url('/slider_phone1.webp');
+    background-size: cover;
+  }
+}
+
+.hot_prices {
+  margin-top: 82px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__header_title {
+    @extend %header1;
+  }
+}

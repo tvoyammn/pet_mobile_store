@@ -95,7 +95,7 @@ const MainLayout: React.FC = ({ children }) => {
           </div>
         </nav>
       </header>
-      <main>
+      <main className={styles.main}>
           {children}
       </main>
       <footer>

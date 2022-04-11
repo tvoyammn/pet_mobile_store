@@ -1,0 +1,12 @@
+@import './utils/_variables.module.scss';
+
+.pagination {
+  display: flex;
+  gap: 16px;
+
+  &__button {
+    width: 32px;
+    height: 32px;
+    border: 1px solid $iconsColor;
+  }
+}
